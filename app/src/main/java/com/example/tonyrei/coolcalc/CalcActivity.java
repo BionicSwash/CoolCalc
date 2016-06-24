@@ -9,6 +9,22 @@ import android.widget.TextView;
 
 public class CalcActivity extends AppCompatActivity {
 
+    public enum Operation {
+        ADD, SUBTRACT, DIVIDE, MULTIPLY, EQUALS
+    }
+
+    TextView resultTextView;
+
+    String runningTotal ="";
+    String rightValueStr = "";
+    String leftValueStr = "";
+
+    Operation currentOperation;
+
+    int result = 0;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,24 +48,30 @@ public class CalcActivity extends AppCompatActivity {
         ImageButton multiplyButn = (ImageButton) findViewById(R.id.multiplyButn);
         ImageButton divideButn = (ImageButton) findViewById(R.id.divideButn);
 
-        TextView resultTextView = (TextView) findViewById(R.id.resultTextView);
+        resultTextView = (TextView) findViewById(R.id.resultTextView);
+
+        resultTextView.setText("0");
+
 
         oneButn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                numberPressed(1);
             }
         });
 
         twoButn.setOnClickListener(new View.OnClickListener() {
-           @Override
+            @Override
             public void onClick(View v) {
+                numberPressed(2);
 
-           }
+            }
         });
 
         threeButn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                numberPressed(3);
 
             }
         });
@@ -57,6 +79,7 @@ public class CalcActivity extends AppCompatActivity {
         fourButn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                numberPressed(4);
 
             }
         });
@@ -64,6 +87,7 @@ public class CalcActivity extends AppCompatActivity {
         fiveButn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                numberPressed(5);
 
             }
         });
@@ -71,6 +95,7 @@ public class CalcActivity extends AppCompatActivity {
         sixButn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                numberPressed(6);
 
             }
         });
@@ -78,6 +103,7 @@ public class CalcActivity extends AppCompatActivity {
         sevenButn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                numberPressed(7);
 
             }
         });
@@ -85,6 +111,7 @@ public class CalcActivity extends AppCompatActivity {
         eightButn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                numberPressed(8);
 
             }
         });
@@ -92,6 +119,7 @@ public class CalcActivity extends AppCompatActivity {
         nineButn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                numberPressed(9);
 
             }
         });
@@ -99,6 +127,7 @@ public class CalcActivity extends AppCompatActivity {
         zeroButn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                numberPressed(0);
 
             }
         });
@@ -106,6 +135,12 @@ public class CalcActivity extends AppCompatActivity {
         clearButn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                leftValueStr = "";
+                rightValueStr = "";
+                result = 0;
+                runningTotal = "0";
+                currentOperation = null;
+                resultTextView.setText("0");
 
             }
         });
@@ -113,6 +148,7 @@ public class CalcActivity extends AppCompatActivity {
         equalsButn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                processOperation(Operation.EQUALS);
 
             }
         });
@@ -120,6 +156,7 @@ public class CalcActivity extends AppCompatActivity {
         subtractButn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                processOperation(Operation.SUBTRACT);
 
             }
         });
@@ -127,6 +164,7 @@ public class CalcActivity extends AppCompatActivity {
         addButn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                processOperation(Operation.ADD);
 
             }
         });
@@ -134,6 +172,7 @@ public class CalcActivity extends AppCompatActivity {
         multiplyButn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                processOperation(Operation.MULTIPLY);
 
             }
         });
@@ -141,9 +180,59 @@ public class CalcActivity extends AppCompatActivity {
         divideButn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                processOperation(Operation.DIVIDE);
 
             }
         });
 
-    }}
+        resultTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View V) {
+
+            }
+        });}
+
+    void processOperation(Operation operation) {
+        if (currentOperation != null) {
+
+            if (runningTotal != "") {
+                rightValueStr = runningTotal;
+                runningTotal = "";
+
+                switch (currentOperation) {
+                    case ADD:
+                        result = Integer.parseInt(leftValueStr) + Integer.parseInt(rightValueStr);
+                        break;
+                    case SUBTRACT:
+                        result = Integer.parseInt(leftValueStr) - Integer.parseInt(rightValueStr);
+                        break;
+                    case MULTIPLY:
+                        result = Integer.parseInt(leftValueStr) * Integer.parseInt(rightValueStr);
+                        break;
+                    case DIVIDE:
+                        result = Integer.parseInt(leftValueStr) / Integer.parseInt(rightValueStr);
+                        break;
+                }
+
+                leftValueStr = String.valueOf(result);
+                resultTextView.setText(leftValueStr);
+            }
+
+
+        } else {
+            leftValueStr = runningTotal;
+            runningTotal = "";
+        }
+        currentOperation = operation;
+    }
+
+
+        void numberPressed(int number) {
+            runningTotal +=String.valueOf(number);
+            resultTextView.setText(runningTotal);
+
+
+
+    }
+    }
 
